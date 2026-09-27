@@ -1,6 +1,10 @@
 import { CardClarification } from '../types/game';
+import { BASE_LEADERS_WONDERS } from './cards/baseLeadersWonders';
+import { GOVERNMENTS_TECHS_BUILDINGS } from './cards/governmentsTechsBuildings';
+import { PRODUCTION_AND_URBAN_BUILDINGS } from './cards/productionAndUrbanBuildings';
+import { TACTICS_MILITARY_EVENTS } from './cards/tacticsMilitaryEvents';
 
-export const CARDS_DATA: CardClarification[] = [
+const EXPANSION_AND_REBALANCED_CARDS: CardClarification[] = [
   // --- AGE A LEADERS & WONDERS ---
   {
     id: 'confucius',
@@ -838,4 +842,12 @@ export const CARDS_DATA: CardClarification[] = [
     ],
     tags: ['rebalanced', 'technology', 'military', 'age-iii']
   }
+];
+
+export const CARDS_DATA: CardClarification[] = [
+  ...BASE_LEADERS_WONDERS,
+  ...EXPANSION_AND_REBALANCED_CARDS,
+  ...GOVERNMENTS_TECHS_BUILDINGS,
+  ...PRODUCTION_AND_URBAN_BUILDINGS,
+  ...TACTICS_MILITARY_EVENTS,
 ];

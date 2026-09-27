@@ -15,7 +15,7 @@ export const CardDatabase: React.FC<CardDatabaseProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedAge, setSelectedAge] = useState<string>('all');
   const [selectedType, setSelectedType] = useState<string>('all');
-  const [expansionFilter, setExpansionFilter] = useState<'all' | 'expansion' | 'rebalanced'>('all');
+  const [expansionFilter, setExpansionFilter] = useState<'all' | 'base' | 'expansion' | 'rebalanced'>('all');
 
   const filteredCards = useMemo(() => {
     const q = searchQuery.toLowerCase().trim();
@@ -26,7 +26,7 @@ export const CardDatabase: React.FC<CardDatabaseProps> = ({
 
       // Type filter
       if (selectedType !== 'all') {
-        if (selectedType === 'tech' && !(card.type === 'technology' || card.type === 'government')) {
+        if (selectedType === 'tech' && !(card.type === 'technology' || card.type === 'action')) {
           return false;
         }
         if (selectedType !== 'tech' && card.type !== selectedType) {
@@ -35,6 +35,7 @@ export const CardDatabase: React.FC<CardDatabaseProps> = ({
       }
 
       // Expansion filter
+      if (expansionFilter === 'base' && (card.isExpansion || card.isRebalanced)) return false;
       if (expansionFilter === 'expansion' && !card.isExpansion) return false;
       if (expansionFilter === 'rebalanced' && !card.isRebalanced) return false;
 
@@ -150,7 +151,8 @@ export const CardDatabase: React.FC<CardDatabaseProps> = ({
               { id: 'wonder', labelSr: 'Čuda', labelEn: 'Wonders' },
               { id: 'military', labelSr: 'Vojne / Događaji', labelEn: 'Military / Events' },
               { id: 'tactic', labelSr: 'Taktike', labelEn: 'Tactics' },
-              { id: 'tech', labelSr: 'Vlade & Tehnologije', labelEn: 'Govt & Tech' },
+              { id: 'tech', labelSr: 'Zgrade & Tehnologije', labelEn: 'Buildings & Tech' },
+              { id: 'government', labelSr: 'Vlade', labelEn: 'Governments' },
             ].map((t) => (
               <button
                 key={t.id}
@@ -172,7 +174,8 @@ export const CardDatabase: React.FC<CardDatabaseProps> = ({
               {lang === 'sr' ? 'Izdanje:' : 'Edition:'}
             </span>
             {[
-              { id: 'all' as const, labelSr: 'Sve', labelEn: 'All' },
+              { id: 'all' as const, labelSr: 'Sve (Sve kartice)', labelEn: 'All Cards' },
+              { id: 'base' as const, labelSr: 'Osnovna Igra', labelEn: 'Base Game' },
               { id: 'expansion' as const, labelSr: 'Nova Ekspanzija', labelEn: 'New Expansion' },
               { id: 'rebalanced' as const, labelSr: 'Rebalansirane', labelEn: 'Rebalanced' },
             ].map((ed) => (
@@ -228,6 +231,11 @@ export const CardDatabase: React.FC<CardDatabaseProps> = ({
                       Doba {card.age}
                     </span>
                     <div className="flex items-center gap-1.5">
+                      {!card.isExpansion && !card.isRebalanced && (
+                        <span className="text-[10px] text-stone-300 bg-stone-900/80 px-1.5 py-0.5 rounded border border-stone-700/50">
+                          {lang === 'sr' ? 'Osnovna' : 'Base'}
+                        </span>
+                      )}
                       {card.isExpansion && (
                         <span className="text-[10px] text-amber-300 flex items-center gap-0.5 bg-amber-950/60 px-1.5 py-0.5 rounded border border-amber-800/40">
                           <Sparkles className="w-2.5 h-2.5 text-amber-400" />

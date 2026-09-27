@@ -57,6 +57,11 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
             <span className="text-xs text-amber-400 font-medium">
               {lang === 'sr' ? typeNamesSr[card.type] : typeNamesEn[card.type]}
             </span>
+            {!card.isExpansion && !card.isRebalanced && (
+              <span className="text-[11px] text-stone-300 bg-stone-900/80 px-1.5 py-0.5 rounded border border-stone-700/50">
+                {lang === 'sr' ? 'Osnovna Igra' : 'Base Game'}
+              </span>
+            )}
             {card.isExpansion && (
               <span className="text-[11px] text-amber-300 flex items-center gap-1 bg-amber-950/60 px-1.5 py-0.5 rounded border border-amber-800/50">
                 <Sparkles className="w-3 h-3 text-amber-400" />
